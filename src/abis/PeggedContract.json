@@ -1,0 +1,211 @@
+{
+  "contractName": "PeggedContract",
+  "abi": [],
+  "metadata": "{\"compiler\":{\"version\":\"0.8.4+commit.c7e474f2\"},\"language\":\"Solidity\",\"output\":{\"abi\":[],\"devdoc\":{\"kind\":\"dev\",\"methods\":{},\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"version\":1}},\"settings\":{\"compilationTarget\":{\"/D/Work/upwork/pegged-contract/contracts/PeggedContract.sol\":\"PeggedContract\"},\"evmVersion\":\"istanbul\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":false,\"runs\":200},\"remappings\":[]},\"sources\":{\"/D/Work/upwork/pegged-contract/contracts/BrainContract.sol\":{\"keccak256\":\"0x0e8b6e3cf2a34e8e52ffe0158a10611230cc6fcffde9b11b8298a75da6b6c7c1\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://1e35b3de82e4faefd943192bbe2443fe33193758e7d02b6c9d4761556ffae8ae\",\"dweb:/ipfs/QmbQ7cXdnwRRvg3TBsX4ZfqNsbfSXM8hz9RH3GTuAYPNqJ\"]},\"/D/Work/upwork/pegged-contract/contracts/PeggedContract.sol\":{\"keccak256\":\"0x3d36d1ee7851eab9c8e28cfa2f11f4930c6529102a1aa7cf9e0ed6d9c0d7b7ea\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://82c5273c766f521199eb7cd6a80c75d1b27c7e8ecb8d6abd3330679a250f354d\",\"dweb:/ipfs/QmPYQRwTDBshpNsSufQRzXFfb1zxRqAWDKq5729iQEw1VB\"]},\"/D/Work/upwork/pegged-contract/contracts/PeggedToken.sol\":{\"keccak256\":\"0x8fb99005e5e2b5d55effc801cb4102caab13169ac082235edbf227a74d22b183\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://e4ec3e4a940f023b4cc15e47ca4362d98dabab59df315de99470ff3ab61ac122\",\"dweb:/ipfs/QmQJot5htSFiGSFBNGPiyd6Aqhw2wAbxDmArMWNukTZWoS\"]},\"@chainlink/contracts/src/v0.8/interfaces/AggregatorV3Interface.sol\":{\"keccak256\":\"0xf2b6c9adb3552254df1445b73563cf014434ff5e78663e9b961b6c059506ceb5\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://6c1f59e0c7334c22fb54288728fc32546bdc9c8133d6db0d60223e3c28f52120\",\"dweb:/ipfs/QmeuxawUVBhMWQJXaEhhnubCTc4Jwn5wYK8gbhq6NjrpfG\"]},\"@openzeppelin/contracts/token/ERC20/ERC20.sol\":{\"keccak256\":\"0xd1d8caaeb45f78e0b0715664d56c220c283c89bf8b8c02954af86404d6b367f8\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://300a0cc7be3b26c96c22a47ffa9530a585e1c4f2dba3021d9bf309dc63007487\",\"dweb:/ipfs/QmQmxsvxK6CaJmQ4D8vDCYPLHMqcMmZLcBqedG4GFAbzu9\"]},\"@openzeppelin/contracts/token/ERC20/IERC20.sol\":{\"keccak256\":\"0x61437cb513a887a1bbad006e7b1c8b414478427d33de47c5600af3c748f108da\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://2c3d0973630ed74f2b5ce3944677a885dc70ec32fc83b35f55045a10224da32b\",\"dweb:/ipfs/QmbefZ5RoEZKNHXCALfh683PnaNYzKPcKMFjyY1DVAgq8A\"]},\"@openzeppelin/contracts/token/ERC20/extensions/IERC20Metadata.sol\":{\"keccak256\":\"0x8de418a5503946cabe331f35fe242d3201a73f67f77aaeb7110acb1f30423aca\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://5a376d3dda2cb70536c0a45c208b29b34ac560c4cb4f513a42079f96ba47d2dd\",\"dweb:/ipfs/QmZQg6gn1sUpM8wHzwNvSnihumUCAhxD119MpXeKp8B9s8\"]},\"@openzeppelin/contracts/utils/Context.sol\":{\"keccak256\":\"0xe2e337e6dde9ef6b680e07338c493ebea1b5fd09b43424112868e9cc1706bca7\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://6df0ddf21ce9f58271bdfaa85cde98b200ef242a05a3f85c2bc10a8294800a92\",\"dweb:/ipfs/QmRK2Y5Yc6BK7tGKkgsgn3aJEQGi5aakeSPZvS65PV8Xp3\"]}},\"version\":1}",
+  "bytecode": "0x6080604052348015600f57600080fd5b50603f80601d6000396000f3fe6080604052600080fdfea2646970667358221220f4e1fd53ecb1ac2a50d5220435bd97b4765cb7a814715233bdaeced454f5072e64736f6c63430008040033",
+  "deployedBytecode": "0x6080604052600080fdfea2646970667358221220f4e1fd53ecb1ac2a50d5220435bd97b4765cb7a814715233bdaeced454f5072e64736f6c63430008040033",
+  "immutableReferences": {},
+  "sourceMap": "122:1381:2:-:0;;;;;;;;;;;;;;;;;;;",
+  "deployedSourceMap": "122:1381:2:-:0;;;;;",
+  "source": "// SPDX-License-Identifier: MIT\r\npragma solidity ^0.8.0;\r\n\r\nimport \"./PeggedToken.sol\";\r\nimport \"./BrainContract.sol\";\r\n\r\ncontract PeggedContract {\r\n\r\n  // //assign Token contract to variable\r\n  // PeggedToken private token;\r\n\r\n  // //add mappings\r\n\r\n  // mapping(address => uint) public usersBalance;\r\n\r\n  // //add events\r\n  // event DepositX(address indexed user, uint etherAmount, uint timeStart);\r\n  // event Withdraw(address indexed user, uint userBalance,  uint amount);\r\n\r\n  // //pass as constructor argument deployed Token contract\r\n  // constructor(PeggedToken _token) {\r\n  //   //assign token deployed contract to variable\r\n  //   token = _token;\r\n  // }\r\n\r\n  // function deposit(uint256 amount) public {\r\n  //   // require(msg.value >= 1e16,'Error, deposit must be >= 0.01 ETH');\r\n  //   token.transferFrom(address(this),msg.sender, amount);\r\n  //   usersBalance[msg.sender] +=amount;\r\n  //   //emit Deposit event\r\n  //   emit DepositX(msg.sender,amount,block.timestamp);\r\n  // }\r\n\r\n  // function mint(uint256 amount) public {\r\n  //   //check if msg.sender have minter role\r\n\t// \ttoken.mint(address(this), amount);\r\n\t// }\r\n\r\n\r\n  // function withdraw(uint256 amount) public {\r\n  //   uint userBalance = usersBalance[msg.sender];\r\n  //   //send eth to user\r\n  //   token.transferFrom(msg.sender, address(this) ,amount );\r\n  //   //send interest in tokens to user\r\n  //   usersBalance[msg.sender] -= amount;\r\n  //   //emit event\r\n  //   emit Withdraw(msg.sender,userBalance,amount);\r\n  // }\r\n\r\n}",
+  "sourcePath": "D:/Work/upwork/pegged-contract/contracts/PeggedContract.sol",
+  "ast": {
+    "absolutePath": "/D/Work/upwork/pegged-contract/contracts/PeggedContract.sol",
+    "exportedSymbols": {
+      "AggregatorV3Interface": [
+        1007
+      ],
+      "BrainContract": [
+        831
+      ],
+      "Context": [
+        1678
+      ],
+      "ERC20": [
+        1553
+      ],
+      "IERC20": [
+        1631
+      ],
+      "IERC20Metadata": [
+        1656
+      ],
+      "PeggedContract": [
+        869
+      ],
+      "PeggedToken": [
+        933
+      ],
+      "SafeMath": [
+        312
+      ]
+    },
+    "id": 870,
+    "license": "MIT",
+    "nodeType": "SourceUnit",
+    "nodes": [
+      {
+        "id": 866,
+        "literals": [
+          "solidity",
+          "^",
+          "0.8",
+          ".0"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "33:23:2"
+      },
+      {
+        "absolutePath": "/D/Work/upwork/pegged-contract/contracts/PeggedToken.sol",
+        "file": "./PeggedToken.sol",
+        "id": 867,
+        "nameLocation": "-1:-1:-1",
+        "nodeType": "ImportDirective",
+        "scope": 870,
+        "sourceUnit": 934,
+        "src": "60:27:2",
+        "symbolAliases": [],
+        "unitAlias": ""
+      },
+      {
+        "absolutePath": "/D/Work/upwork/pegged-contract/contracts/BrainContract.sol",
+        "file": "./BrainContract.sol",
+        "id": 868,
+        "nameLocation": "-1:-1:-1",
+        "nodeType": "ImportDirective",
+        "scope": 870,
+        "sourceUnit": 832,
+        "src": "89:29:2",
+        "symbolAliases": [],
+        "unitAlias": ""
+      },
+      {
+        "abstract": false,
+        "baseContracts": [],
+        "contractDependencies": [],
+        "contractKind": "contract",
+        "fullyImplemented": true,
+        "id": 869,
+        "linearizedBaseContracts": [
+          869
+        ],
+        "name": "PeggedContract",
+        "nameLocation": "131:14:2",
+        "nodeType": "ContractDefinition",
+        "nodes": [],
+        "scope": 870,
+        "src": "122:1381:2",
+        "usedErrors": []
+      }
+    ],
+    "src": "33:1470:2"
+  },
+  "legacyAST": {
+    "absolutePath": "/D/Work/upwork/pegged-contract/contracts/PeggedContract.sol",
+    "exportedSymbols": {
+      "AggregatorV3Interface": [
+        1007
+      ],
+      "BrainContract": [
+        831
+      ],
+      "Context": [
+        1678
+      ],
+      "ERC20": [
+        1553
+      ],
+      "IERC20": [
+        1631
+      ],
+      "IERC20Metadata": [
+        1656
+      ],
+      "PeggedContract": [
+        869
+      ],
+      "PeggedToken": [
+        933
+      ],
+      "SafeMath": [
+        312
+      ]
+    },
+    "id": 870,
+    "license": "MIT",
+    "nodeType": "SourceUnit",
+    "nodes": [
+      {
+        "id": 866,
+        "literals": [
+          "solidity",
+          "^",
+          "0.8",
+          ".0"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "33:23:2"
+      },
+      {
+        "absolutePath": "/D/Work/upwork/pegged-contract/contracts/PeggedToken.sol",
+        "file": "./PeggedToken.sol",
+        "id": 867,
+        "nameLocation": "-1:-1:-1",
+        "nodeType": "ImportDirective",
+        "scope": 870,
+        "sourceUnit": 934,
+        "src": "60:27:2",
+        "symbolAliases": [],
+        "unitAlias": ""
+      },
+      {
+        "absolutePath": "/D/Work/upwork/pegged-contract/contracts/BrainContract.sol",
+        "file": "./BrainContract.sol",
+        "id": 868,
+        "nameLocation": "-1:-1:-1",
+        "nodeType": "ImportDirective",
+        "scope": 870,
+        "sourceUnit": 832,
+        "src": "89:29:2",
+        "symbolAliases": [],
+        "unitAlias": ""
+      },
+      {
+        "abstract": false,
+        "baseContracts": [],
+        "contractDependencies": [],
+        "contractKind": "contract",
+        "fullyImplemented": true,
+        "id": 869,
+        "linearizedBaseContracts": [
+          869
+        ],
+        "name": "PeggedContract",
+        "nameLocation": "131:14:2",
+        "nodeType": "ContractDefinition",
+        "nodes": [],
+        "scope": 870,
+        "src": "122:1381:2",
+        "usedErrors": []
+      }
+    ],
+    "src": "33:1470:2"
+  },
+  "compiler": {
+    "name": "solc",
+    "version": "0.8.4+commit.c7e474f2.Emscripten.clang"
+  },
+  "networks": {},
+  "schemaVersion": "3.2.3",
+  "updatedAt": "2021-12-28T14:04:32.366Z",
+  "devdoc": {
+    "kind": "dev",
+    "methods": {},
+    "version": 1
+  },
+  "userdoc": {
+    "kind": "user",
+    "methods": {},
+    "version": 1
+  }
+}
