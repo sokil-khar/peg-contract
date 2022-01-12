@@ -17,17 +17,9 @@
  * phrase from a file you've .gitignored so it doesn't accidentally become public.
  *
  */
-
 require('dotenv').config();
-// const HDWalletProvider = require('truffle-hdwallet-provider-privkey');
-// const privateKeys = process.env.PRIVATE_KEYS || ""
-
-// const HDWalletProvider = require('@truffle/hdwallet-provider');
 const HDWalletProvider = require('truffle-hdwallet-provider-privkey');
-// const infuraKey = "fj4jll3k.....";
-//
-// const fs = require('fs');
-// const mnemonic = fs.readFileSync(".secret").toString().trim();
+const mainnetUrl = `https://mainnet.infura.io/v3/`+process.env.INFURA_API_KEY;
 
 module.exports = {
   /**
@@ -52,23 +44,23 @@ module.exports = {
       port: 7545,            // Standard Ethereum port (default: none)
       network_id: "*",       // Any network (default: none)
     },
-    // kovan: {
-    //   provider: function() {
-    //     return new HDWalletProvider(process.env.PRIVATE_KEYS
-    //       , "https://eth-kovan.alchemyapi.io/v2/khT8ejnF4J3aOuiYZOn0ifLyMfQO-yIw");
-    //   },
-    //   network_id: 42, 
-    // }
     kovan: {
-      provider: function() {
+      provider: function () {
         return new HDWalletProvider(
           process.env.privateKeys.split(','), // Array of account private keys
-          `https://kovan.infura.io/v3/00241817c8a84665adddb123c4914765`// Url to an Ethereum Node
+          `https://kovan.infura.io/v3/9be0749579b048bfae37e2660c19f034`// Url to an Ethereum Node
         )
       },
       gas: 5000000,
       gasPrice: 5000000000, // 5 gwei
-      network_id: 42
+      network_id: 42,
+      skipDryRun: true
+    },
+    mainnet: {
+      provider: () => new HDWalletProvider(
+        process.env.privateKeys.split(','),
+        mainnetUrl),
+      network_id: 1,
     },
     // hardhat: {
     //   forking: {
@@ -121,6 +113,12 @@ module.exports = {
       //  evmVersion: "byzantium"
       // }
     },
+  },
+  plugins: [
+    'truffle-plugin-verify'
+  ],
+  api_keys: {
+    etherscan: 'AIBAW9EIPB9J9IRJST1MDB4KKVST8N4ZSS'
   },
   contracts_directory: './contracts/',
   contracts_build_directory: './src/abis/',
