@@ -450,7 +450,7 @@ contract FleepToken is ERC20 {
                 percent = (percent * 93859**5) / (100000**5);
             }
             percent = (percent * (93859**resident)) / (100000**resident);
-            return (percent / (10**14) + 3 * 10000, 10**4);
+            return (percent / (10**14) + 2 * 10**3, 10**4);
         }
     }
 
@@ -494,7 +494,7 @@ contract FleepToken is ERC20 {
                 percent = (percent * 947**5) / (1000**5);
             }
             percent = (percent * (947**resident)) / (1000**resident);
-            return (percent / (10**14) + 3 * 10000, 10**4);
+            return (percent / (10**14) + 500, 10**4);
         }
     }
 

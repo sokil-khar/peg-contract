@@ -762,7 +762,7 @@
   },
   "networks": {},
   "schemaVersion": "3.2.3",
-  "updatedAt": "2022-01-11T13:28:20.503Z",
+  "updatedAt": "2022-01-13T12:17:39.400Z",
   "devdoc": {
     "details": "Interface for the optional metadata functions from the ERC20 standard. _Available since v4.1._",
     "kind": "dev",
