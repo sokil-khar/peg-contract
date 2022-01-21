@@ -222,7 +222,7 @@ class Dashboard extends Component {
                             onClick={() => this.loadWeb3Accounts()}
                             // borderColor: 'transparent', backgroundColor: 'transparent',
                             style={{  boxShadow: 'none',borderColor: 'transparent', backgroundColor: 'transparent', }}>
-                            <img style={{ height: '50px', width: '250px', position: 'absolute', top: '1vh', right: '2vw' }} src={require('../../resources/img/ConnectWallet.png')}></img>
+                            <img alt={''} style={{ height: '50px', width: '250px', position: 'absolute', top: '1vh', right: '2vw' }} src={require('../../resources/img/ConnectWallet.png')}></img>
                         </Button>
                     </Col>
                 </Row>
@@ -248,7 +248,7 @@ class Dashboard extends Component {
                                     to="/buyFleep"
                                     style={{ boxShadow: 'none',borderColor: 'transparent', backgroundColor: 'transparent', }}>
                                     {/* <div className="buyFleepBtn" /> */}
-                                    <img className="buyFleepBtn" src={require('../../resources/img/BuyFleep.png')} />
+                                    <img className="buyFleepBtn" src={require('../../resources/img/BuyFleep.png')} alt={''}/>
                                 </Link>
                             </div>
                         </Row>
