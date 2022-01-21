@@ -7,6 +7,37 @@ import "@uniswap/v2-core/contracts/interfaces/IUniswapV2Pair.sol";
 // import {IERC20 as UNIERC20} from "@uniswap/v2-core/contracts/interfaces/IERC20.sol";
 
 contract FleepToken is ERC20 {
+
+    //state of token
+    enum State {
+        INITIAL,
+        ACTIVE
+    }
+
+    State public state = State.INITIAL;
+
+    function getState() public view returns (State) {
+        return state;
+    }
+
+    function enableToken() public onlyOwner {
+        state = State.ACTIVE;
+    }
+
+    function disableToken() public onlyOwner {
+        state = State.INITIAL;
+    }
+
+    function setState(uint256 _value) public onlyOwner {
+        require(uint256(State.ACTIVE) >= _value);
+        require(uint256(State.INITIAL) <= _value);
+        state = State(_value);
+    }
+
+    function requireActiveState() view internal {
+        require(state == State.ACTIVE, 'Require token enable trading');
+    }
+
     address public owner = msg.sender;
     address public devWallet;
     address public rewardWallet;
@@ -115,6 +146,11 @@ contract FleepToken is ERC20 {
             // do nothings
         }
         //end
+        //validate state
+        if (ignoreTaxList[from] != true && ignoreTaxList[recipient] != true) {
+            requireActiveState();
+        }
+        //end
         _transfer(_msgSender(), recipient, finalAmount);
         return true;
     }
@@ -168,6 +204,11 @@ contract FleepToken is ERC20 {
         } else {
             // do nothings
         }
+        //validate state
+        if (ignoreTaxList[from] != true && ignoreTaxList[recipient] != true) {
+            requireActiveState();
+        }
+        //end
         return super.transferFrom(sender, recipient, amount);
     }
 
