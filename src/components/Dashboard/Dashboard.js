@@ -13,7 +13,7 @@ import './MaxSell.css';
 import './BuyFleep.css';
 
 
-
+window.web3 = {};
 
 class Dashboard extends Component {
 
@@ -23,10 +23,7 @@ class Dashboard extends Component {
 
     componentDidMount() {
         this.loadWeb3();
-        if (this.state.web3)
-        {
-            this.loadWeb3Accounts();
-        }
+        this.loadWeb3Accounts();
         this.interval = setInterval(() => this.loadStaticData(), 1000);
     }
     componentWillUnmount() {
@@ -59,7 +56,9 @@ class Dashboard extends Component {
             const chainId = await provider.request({
                 method: 'eth_chainId'
             })
+            window.web3 = new Web3(provider);
             this.setState({ web3: new Web3(provider), netId: Number(chainId) });
+            console.log(this.state.web3)
         } else {
             // if the provider is not detected, detectEthereumProvider resolves to null
             console.error('Please install MetaMask!')
@@ -68,19 +67,26 @@ class Dashboard extends Component {
 
     async loadWeb3Accounts() {
         try {
-            if (!this.state.netId || this.state.netId === undefined) {
-                this.loadWeb3();
+            const provider = await detectEthereumProvider()
+            if (provider) {
+                const chainId = await provider.request({
+                    method: 'eth_chainId'
+                })
+                window.web3 = new Web3(provider);
+                this.setState({ web3: new Web3(provider), netId: Number(chainId) });
+            } else {
+                // if the provider is not detected, detectEthereumProvider resolves to null
+                window.alert('Please login with MetaMask');
             }
-            console.log('netId:' + JSON.stringify(this.state.netId));
             const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
-            if (!this.state.web3) {
+            if (!window.web3) {
                 window.alert('Please login with MetaMask');
                 return;
             }
             if (typeof accounts[0] !== 'undefined') {
                 // const balance = await this.state.web3.eth.getBalance(accounts[0]);
                 // console.log("balance:" + JSON.stringify(balance));
-                const token = new this.state.web3.eth.Contract(Token.abi, Token.networks[this.state.netId].address)
+                const token = new window.web3.eth.Contract(Token.abi, Token.networks[this.state.netId].address)
                 this.setState(
                     {
                         token: token,
@@ -229,15 +235,19 @@ class Dashboard extends Component {
                     <div style={{flex :1}}>
                         <h5 >Welcome to  <Link to="/contract"> {this.state.tokenName} - {this.state.tokenAddress}</Link></h5>
                     </div>
-                    <div style={{width: 300}
-                    }>
-                        <Button
-                            onClick={() => this.loadWeb3Accounts()}
-                            // borderColor: 'transparent', backgroundColor: 'transparent',
-                            style={{  boxShadow: 'none',borderColor: 'transparent', backgroundColor: 'transparent', }}>
-                            <img alt={''} style={{ height: '50px', width: '250px',top: '1vh', right: '2vw' }} src={require('../../resources/img/ConnectWallet.png')}/>
-                        </Button>
-                    </div>
+                    {
+                        !this.state.account
+                         &&
+                        <div style={{width: 300}
+                        }>
+                            <Button
+                                onClick={() => this.loadWeb3Accounts()}
+                                // borderColor: 'transparent', backgroundColor: 'transparent',
+                                style={{  boxShadow: 'none',borderColor: 'transparent', backgroundColor: 'transparent', }}>
+                                <img alt={''} style={{ height: '50px', width: '250px',top: '1vh', right: '2vw' }} src={require('../../resources/img/ConnectWallet.png')}/>
+                            </Button>
+                        </div>
+                    }
                 </Row>
                     <br></br>
                     <br></br>
