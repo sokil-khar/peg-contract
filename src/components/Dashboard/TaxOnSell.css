@@ -7,16 +7,15 @@
 }
 
 .textCenter {
-    margin-top: -20px;
-    margin-left: 200px;
+    margin-top: 80px;
+    margin-left: 100px;
 }
 
 
 
 .taxOnSell {
 	position: relative;
-    top: -200px;
-	left: 100px;
+    top: -100px;
     z-index: -1;
 	height: var(--pixel-size);
 	width: var(--pixel-size);

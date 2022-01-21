@@ -8,14 +8,13 @@
 
 .maxSellText {
     margin-top: 105px;
-    margin-left: 200px;
+    margin-left: 100px;
     font-size: 16;
 }
 
 .maxSell {
 	position: relative;
     top: -70px;
-	left: 100px;
     z-index: -1;
 	height: var(--pixel-size);
 	width: var(--pixel-size);

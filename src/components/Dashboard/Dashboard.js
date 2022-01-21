@@ -18,10 +18,15 @@ import './BuyFleep.css';
 class Dashboard extends Component {
 
     async componentWillMount() {
-        this.loadWeb3();
+        // this.loadWeb3();
     }
 
     componentDidMount() {
+        this.loadWeb3();
+        if (this.state.web3)
+        {
+            this.loadWeb3Accounts();
+        }
         this.interval = setInterval(() => this.loadStaticData(), 1000);
     }
     componentWillUnmount() {
@@ -35,13 +40,15 @@ class Dashboard extends Component {
             currentBlock: {
 
             },
+            tokenAddress: '',
             tokenName: Token.contractName,
             balance: 0,
             tokenPrice: 0,
             peggedPrice: 0,
             tax: 0,
             rewardOnBuy: 0,
-            maxSellable: 0
+            maxSellable: 0,
+            showtaxs: false
         }
     }
 
@@ -61,7 +68,6 @@ class Dashboard extends Component {
 
     async loadWeb3Accounts() {
         try {
-            console.log('web3:' + (!this.state.web3));
             if (!this.state.netId || this.state.netId === undefined) {
                 this.loadWeb3();
             }
@@ -209,51 +215,57 @@ class Dashboard extends Component {
             }
         }
     }
-
+    showTaxs () {
+        this.setState({showtaxs: !this.state.showtaxs})
+    }
+    showNumber (number) {
+        return Number(number).toFixed(3)
+    }
     render() {
         return (
             <div className='background'>
-                <h5>Welcome to  <Link to="/contract"> {this.state.tokenName} - {this.state.tokenAddress}</Link></h5>
-                <Row>
-                    <Col />
-                    <Col />
-                    <Col>
+                <div className= 'container'>
+                <Row className="justify-content-between">
+                    <div style={{flex :1}}>
+                        <h5 >Welcome to  <Link to="/contract"> {this.state.tokenName} - {this.state.tokenAddress}</Link></h5>
+                    </div>
+                    <div style={{width: 300}
+                    }>
                         <Button
                             onClick={() => this.loadWeb3Accounts()}
                             // borderColor: 'transparent', backgroundColor: 'transparent',
                             style={{  boxShadow: 'none',borderColor: 'transparent', backgroundColor: 'transparent', }}>
-                            <img alt={''} style={{ height: '50px', width: '250px', position: 'absolute', top: '1vh', right: '2vw' }} src={require('../../resources/img/ConnectWallet.png')}></img>
+                            <img alt={''} style={{ height: '50px', width: '250px',top: '1vh', right: '2vw' }} src={require('../../resources/img/ConnectWallet.png')}/>
                         </Button>
-                    </Col>
+                    </div>
                 </Row>
-                <Row className="headingRow">
-                    <Col xs={6} className="balance-btn">
-                    </Col>
-                    <Col className='balance-text text-primary'>
-                        {this.state.balance}
-                    </Col>
-                    <Col className="price-btn">
-                    </Col>
-                    <Col className='price-text text-primary'>{this.state.tokenPrice} DAI</Col>
-                    <Col>
-                    </Col>
+                    <br></br>
+                    <br></br>
+                <Row className="justify-content-between">
+                    <div className="balance-btn">
+                        <p>{this.state.balance}</p>
+                    </div>
+                    <div className="price-btn">
+                        <p>{this.showNumber(this.state.tokenPrice)} DAI </p>
+                    </div>
                 </Row>
-
-                <div className='bodyContainer'>
-                    <Col>
-                        <Row className="h5 text-primary">
-                            <Row className="h4 text-primary">Buy Fleep</Row>
+                <br/>
+                <br/>
+                <Row className="">
+                    <div className='col-lg-3 col-sm-12'>
+                        <div className="h5 text-primary">
+                            <h3 className="h4 text-primary">Buy Fleep</h3>
                             <div style={{ width: "100px", height: "50px" }}>
-                                <Link
-                                    to="/buyFleep"
+                                <Button
+                                    onClick={() => this.showTaxs()}
                                     style={{ boxShadow: 'none',borderColor: 'transparent', backgroundColor: 'transparent', }}>
                                     {/* <div className="buyFleepBtn" /> */}
                                     <img className="buyFleepBtn" src={require('../../resources/img/BuyFleep.png')} alt={''}/>
-                                </Link>
+                                </Button>
                             </div>
-                        </Row>
-                    </Col>
-                    <Col>
+                        </div>
+                    </div>
+                    <div className={(this.state.showtaxs?  'basket '  : 'basket hide ') + 'col-lg-9 col-sm-12'}>
                         <Row className="h5 text-primary">
                             <div>
                                 <Col className="taxOnSell" />
@@ -272,21 +284,16 @@ class Dashboard extends Component {
                                 <div className="maxSellText">{this.state.maxSellable} TOKEN </div>
                             </div>
                         </Row>
-                    </Col>
-
-                </div>
-                <Row className="footerRow">
-
-                    <Col className="block-text h5 text-danger">Current block {this.state.currentBlock.number}</Col>
-                    <Col xs={6}></Col>
-                    <Col>
-                        <Row>
-                            <Col className="peg-btn"></Col>
-                            <Row className="peg-text text-primary"> {this.state.peggedPrice} DAI</Row>
-                            <Row className="dev-text text-primary"> DEV{this.state.dev}</Row>
-                        </Row>
-                    </Col>
+                    </div>
                 </Row>
+                <Row className="justify-content-between">
+                    <div style={{width: 400}} className="block-text h5 text-danger">Current block {this.state.currentBlock.number}</div>
+                    <div className="peg-btn text-center" >
+                        <p className="text-primary" style={{marginTop: 40, marginBottom: 0}}> {this.state.peggedPrice} DAI</p>
+                        <p className="text-primary"> DEV{this.state.dev}</p>
+                    </div>
+                </Row>
+                </div>
             </div>
         );
     }

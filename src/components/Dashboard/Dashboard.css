@@ -1,29 +1,50 @@
 .background {
-    background-image: url("../../resources/img/background1.png");
+    background: url("../../resources/img/background.gif") no-repeat center center fixed;
     position: fixed;
     top: 0;
+    background-color: #a4b6d3;
     width: 100%;
-    height: 100%;
     font-size: 16px;
-    /* Center and scale the image nicely */
-    background-position: center;
-    background-repeat: no-repeat;
     background-size: cover;
+    padding: 0;
+    margin: 0;
+    overflow: scroll;
+    height: 100vh;
 }
 
+@media (min-width:320px)  {
+    /* smartphones, iPhone, portrait 480x320 phones */
+}
+@media (min-width:481px)  {
+    /* portrait e-readers (Nook/Kindle), smaller tablets @ 600 or @ 640 wide. */
+}
+@media (min-width:641px) {
+}
 .headingRow {
+    width: 100%;
     /* height: 300px;
     padding-top: 2em; */
-    /* margin-top: 1em; */
+    margin-top: 1em;
+    margin-left: 15px;
+    margin-right: 15px;
     position: relative;
     padding-top: 1vh;
+    display: flex;
+    justify-content: space-between;
 }
 
 
+.basket {
+    transition: opacity 0.5s;
+    opacity: 1;
+}
+.basket.hide {
+    opacity: 0;
+    pointer-events:none;
+}
 
 .balance-btn {
     background-image: url("../../resources/img/BalanceSprite.png");
-    position: absolute;
     z-index: -1;
     left: 1vw;
     /* top: 100px; */
@@ -41,19 +62,13 @@
 }
 
 
-.balance-text {
-    position: absolute;
-    z-index: -1;
-    left: 3vw;
-    top: 50px;
-    height: 100px;
-    width: 300px;
-    
+.balance-btn p {
+    margin-top: 52px;
+    text-align: center;
 }
 
 .price-btn {
     background-image: url("../../resources/img/Price.png");
-    position: absolute;
     z-index: -1;
     right: 1vw;
     /* top: 100px; */
@@ -70,19 +85,12 @@
     background-size: contain;
 }
 
-.price-text {
-    position: absolute;
-    z-index: -1;
-    right: -1vw;
-    top: 50px;
-    height: 100px;
-    width: 300px;
+.price-btn p {
+    margin-top: 52px;
+    text-align: center;
 }
 
 .block-text {
-    position: absolute;
-    left: 3vw;
-    bottom: 0;
 
 }
 
@@ -96,7 +104,6 @@
 }
 
 .footerRow {
-    position: absolute;
     width: 100vw;
     bottom: 1vh;
     /* border-width: 5px;
@@ -105,10 +112,7 @@
 
 .peg-btn {
     background-image: url("../../resources/img/Peg.png");
-    position: absolute;
     z-index: -1;
-    right: -1vw;
-    bottom: 0px;
     height: 100px;
     width: 300px;
     /* margin-top: 1em;
@@ -123,19 +127,13 @@
 }
 
 .peg-text {
-    position: absolute;
     z-index: -1;
-    right: -3vw;
-    bottom: -40px;
     height: 100px;
     width: 300px;
 }
 
 .dev-text {
-    position: absolute;
     z-index: -1;
-    right: -3vw;
-    bottom: -60px;
     height: 100px;
     width: 300px;
 }
