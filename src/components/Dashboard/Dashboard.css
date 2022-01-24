@@ -13,8 +13,9 @@
 }
 .myContainer {
     background: url("../../resources/img/background.gif") no-repeat fixed center;
-    width: 90%;
     margin-right: 5%;
+    border: solid;
+    border-width: 5vw;
     margin-left: 5%;
     z-index: -2;
     font-size: 16px;
@@ -96,7 +97,6 @@
 }
 
 .bodyCenter {
-    min-height: 30vw;
 }
 
 .footerRow {

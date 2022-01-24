@@ -12,7 +12,7 @@ import './MaxSell.css';
 import './BuyFleep.css';
 import {account} from '../../redux/accountReducer'
 import song from '../../resources/audio/background.wav';
-
+import cloud from '../../resources/img/cloudborder.png'
 
 window.web3 = {};
 const pairAddress = '0x3cCa3712f67cE186c0575f703abd80DF7AC88029';
@@ -25,6 +25,7 @@ const initialState = {
     tokenAddress: '',
     tokenName: Token.contractName,
     balance: 0,
+    account: null,
     tokenPrice: 0,
     peggedPrice: 0,
     tax: 0,
@@ -306,21 +307,10 @@ class Dashboard extends Component {
                     this.showEatGrass();
                 }
             }}>
-                <div className='myContainer' style={{zIndex: -2}}>
-                    <img alt={''}
-                         style={{
-                             height: '100vh',
-                             width: '100vw',
-                             top: '0',
-                             left: '0',
-                             position: 'absolute',
-                             zIndex: -1
-                         }}
-                         src={require('../../resources/img/cloudborder.png')}/>
-                    <Row className="justify-content-between" style={{marginTop: '50px'}}>
+                <div className='myContainer' style={{zIndex: -2, borderImage: `url("${cloud}") 70 65 repeat`
+                }}>
+                    <Row className="justify-content-between" >
                         <div style={{flex: 1}}>
-                            <h5>Welcome to <Link to="/contract"> {Token.contractName} - {this.state.tokenAddress}</Link>
-                            </h5>
                         </div>
 
                         {
@@ -336,7 +326,7 @@ class Dashboard extends Component {
                                         borderColor: 'transparent',
                                         backgroundColor: 'transparent',
                                     }}>
-                                    <img alt={''} style={{height: '50px', width: '250px', top: '1vh', right: '2vw', opacity:'30%'}}
+                                    <img alt={''} style={{height: '50px', width: '250px', top: '1vh', right: '2vw', opacity: this.state.account ? '30%': '100%'}}
                                          src={this.state.account ? require('../../resources/img/afterConnectWallet.png'): require('../../resources/img/ConnectWallet.png')}/>
                                 </Button>
                             </div>
@@ -351,7 +341,7 @@ class Dashboard extends Component {
                         </div>
                     </Row>
                     <br/>
-                    <Row className="bodyCenter" style={{height: height - 700}}>
+                    <Row className="bodyCenter">
                         <div className='col-lg-2 col-sm-12'>
                             <div>
                                 <Button className="pasture-btn"
