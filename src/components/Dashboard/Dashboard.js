@@ -12,13 +12,13 @@ import './BuyFleep.css';
 import {account} from '../../redux/accountReducer'
 import song from '../../resources/audio/background.wav';
 
+//...
 
 window.web3 = {};
 const pairAddress = '0x3cCa3712f67cE186c0575f703abd80DF7AC88029';
 const swapEvent = '0xd78ad95fa46c994b6551d0da85fc275fe613ce37657fb8d5e3d130840159d822';
 
 const {innerWidth: width, innerHeight: height} = window;
-
 const initialState = {
     currentBlock: {},
     tokenAddress: '',
@@ -30,11 +30,11 @@ const initialState = {
     rewardOnBuy: 0,
     maxSellable: 0,
     showtaxs: false,
-    showGrass: false
+    showGrass: false,
+    playing : false
 }
 
 class Dashboard extends Component {
-
 
     componentDidMount() {
         console.log('width:' + width);
@@ -46,7 +46,6 @@ class Dashboard extends Component {
         this.audio.load();
         this.playAudio()
     }
-
     keepPlay(){
         const audioPromise = this.audio.play()
         if (audioPromise !== undefined) {
@@ -60,11 +59,13 @@ class Dashboard extends Component {
                 })
         }
     }
-
     playAudio() {
         if (!this.state.playing) {
+
             this.keepPlay = this.keepPlay.bind(this);
             this.audio.addEventListener('ended', this.keepPlay, false);
+            this.audio.volume = 0.5
+            this.audio.loop = true
             const audioPromise = this.audio.play()
             if (audioPromise !== undefined) {
                 audioPromise
@@ -377,7 +378,7 @@ class Dashboard extends Component {
                                     </Button>
                                 </div>
                                 <div className="d-flex flex-row-reverse">
-                                    <Button className={this.state.playing ? "audio-btn": "mute-btn"}
+                                    <Button   className={this.state.playing ? "audio-btn": "mute-btn"}
                                             onClick={() => this.playAudio()}
                                             style={{
                                                 boxShadow: 'none',
@@ -396,8 +397,19 @@ class Dashboard extends Component {
                                     top: '10vh', left: '10vw',
                                     width: '80vw', height: '80vh', position: 'absolute', display: 'flex'
                                 }} className="glass justify-content-center">
-                                <img alt={''}
-                                     src={require('../../resources/img/ramEat.gif')}/>
+                                <div className="col-sm-12 col-lg-3 grass-bg" >
+                                    <Row>
+                                        <div className="taxOnSells  col-sm-12">
+                                            <p>{this.state.tax}</p>
+                                        </div>
+                                        <div className="maxSell col-sm-12">
+                                            <p>{this.state.maxSellable}</p>
+                                        </div>
+                                        <div className="buyReward col-sm-12">
+                                            <p>{this.state.rewardOnBuy}</p>
+                                        </div>
+                                    </Row>
+                                </div>
                             </div>
                         )}
 
@@ -408,19 +420,10 @@ class Dashboard extends Component {
                             block {this.state.currentBlock ? this.state.currentBlock.number : ''}
                         </div>
 
-                        <div style={{width: '910px'}}>
+                        <div style={{width: '300px'}}>
                             <Row>
                                 <div className="peg-btn">
                                     <p> {this.state.peggedPrice}</p>
-                                </div>
-                                <div className="taxOnSells">
-                                    <p>{this.state.tax}</p>
-                                </div>
-                                <div className="maxSell">
-                                    <p>{this.state.maxSellable}</p>
-                                </div>
-                                <div className="buyReward">
-                                    <p>{this.state.rewardOnBuy}</p>
                                 </div>
                             </Row>
                         </div>

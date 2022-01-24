@@ -25,6 +25,7 @@
     "dotenv": "^10.0.0",
     "ethers": "^5.5.2",
     "react": "^17.0.2",
+    "react-audio-player": "^0.17.0",
     "react-bootstrap": "^2.1.1",
     "react-dom": "16.13.1",
     "react-redux": "^7.2.6",
