@@ -2,7 +2,6 @@ import detectEthereumProvider from '@metamask/detect-provider';
 import React, {Component} from 'react';
 import {Button, Row} from 'react-bootstrap';
 import {connect} from "react-redux";
-import {Link} from "react-router-dom";
 import Web3 from 'web3';
 import Token from '../../abis/FleepToken.json';
 import './Dashboard.css';
@@ -19,7 +18,7 @@ const pairAddress = '0x3cCa3712f67cE186c0575f703abd80DF7AC88029';
 const swapEvent = '0xd78ad95fa46c994b6551d0da85fc275fe613ce37657fb8d5e3d130840159d822';
 
 const {innerWidth: width, innerHeight: height} = window;
-
+console.log(height)
 const initialState = {
     currentBlock: {},
     tokenAddress: '',
