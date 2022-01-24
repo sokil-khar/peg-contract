@@ -11,20 +11,19 @@ import './MaxSell.css';
 import './BuyFleep.css';
 import {account} from '../../redux/accountReducer'
 import song from '../../resources/audio/background.wav';
-import cloud from '../../resources/img/cloudborder.png'
+
 
 window.web3 = {};
 const pairAddress = '0x3cCa3712f67cE186c0575f703abd80DF7AC88029';
 const swapEvent = '0xd78ad95fa46c994b6551d0da85fc275fe613ce37657fb8d5e3d130840159d822';
 
 const {innerWidth: width, innerHeight: height} = window;
-console.log(height)
+
 const initialState = {
     currentBlock: {},
     tokenAddress: '',
     tokenName: Token.contractName,
     balance: 0,
-    account: null,
     tokenPrice: 0,
     peggedPrice: 0,
     tax: 0,
@@ -306,9 +305,8 @@ class Dashboard extends Component {
                     this.showEatGrass();
                 }
             }}>
-                <div className='myContainer' style={{zIndex: -2, borderImage: `url("${cloud}") 70 65 repeat`
-                }}>
-                    <Row className="justify-content-between" >
+                <div className='myContainer' style={{zIndex: -2}}>
+                    <Row className="justify-content-between" style={{marginTop: '50px'}}>
                         <div style={{flex: 1}}>
                         </div>
 
@@ -340,7 +338,7 @@ class Dashboard extends Component {
                         </div>
                     </Row>
                     <br/>
-                    <Row className="bodyCenter">
+                    <Row className="bodyCenter" style={{height: height - 700}}>
                         <div className='col-lg-2 col-sm-12'>
                             <div>
                                 <Button className="pasture-btn"
