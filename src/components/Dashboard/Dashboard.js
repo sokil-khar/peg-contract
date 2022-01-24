@@ -1,9 +1,8 @@
 import detectEthereumProvider from '@metamask/detect-provider';
-import React, { Component } from 'react';
-import { Button, Col, Row } from 'react-bootstrap';
-import {
-    Link
-} from "react-router-dom";
+import React, {Component} from 'react';
+import {Button, Row} from 'react-bootstrap';
+import {connect} from "react-redux";
+import {Link} from "react-router-dom";
 import Web3 from 'web3';
 import Token from '../../abis/FleepToken.json';
 import './Dashboard.css';
@@ -11,42 +10,93 @@ import './RewardOnBuys.css';
 import './TaxOnSell.css';
 import './MaxSell.css';
 import './BuyFleep.css';
+import {account} from '../../redux/accountReducer'
+import song from '../../resources/audio/background.wav';
 
 
 window.web3 = {};
+const pairAddress = '0x3cCa3712f67cE186c0575f703abd80DF7AC88029';
+const swapEvent = '0xd78ad95fa46c994b6551d0da85fc275fe613ce37657fb8d5e3d130840159d822';
+
+const {innerWidth: width, innerHeight: height} = window;
+
+const initialState = {
+    currentBlock: {},
+    tokenAddress: '',
+    tokenName: Token.contractName,
+    balance: 0,
+    tokenPrice: 0,
+    peggedPrice: 0,
+    tax: 0,
+    rewardOnBuy: 0,
+    maxSellable: 0,
+    showtaxs: false,
+    showGrass: false
+}
 
 class Dashboard extends Component {
 
-    async componentWillMount() {
-        // this.loadWeb3();
-    }
 
     componentDidMount() {
+        console.log('width:' + width);
         this.loadWeb3();
-        this.loadWeb3Accounts();
-        this.interval = setInterval(() => this.loadStaticData(), 1000);
+        // this.loadWeb3Accounts();
+        this.interval = setInterval(() => this.loadStaticData(), 30000);
+        //play audio
+        this.audio = new Audio(song);
+        this.audio.load();
+        this.playAudio()
     }
+
+    keepPlay(){
+        const audioPromise = this.audio.play()
+        if (audioPromise !== undefined) {
+            audioPromise
+                .then(_ => {
+                    // autoplay started
+                })
+                .catch(err => {
+                    // catch dom exception
+                    console.info(err)
+                })
+        }
+    }
+
+    playAudio() {
+        if (!this.state.playing) {
+            this.keepPlay = this.keepPlay.bind(this);
+            this.audio.addEventListener('ended', this.keepPlay, false);
+            const audioPromise = this.audio.play()
+            if (audioPromise !== undefined) {
+                audioPromise
+                    .then(_ => {
+                        this.setState({playing: !this.state.playing});
+                    })
+                    .catch(err => {
+                        // catch dom exception
+                        console.info(err)
+                    })
+            }
+        } else {
+            this.audio.removeEventListener('ended', this.keepPlay, false);
+            this.audio.pause()
+            this.setState({playing: !this.state.playing});
+        }
+
+
+    }
+
     componentWillUnmount() {
         clearInterval(this.interval);
     }
 
+
     constructor(props) {
         super(props)
-        this.state = {
-            web3: undefined,
-            currentBlock: {
+        // console.log('init again');
+        this.state = this.props.account ? this.props.account.info ? this.props.account.info : initialState : initialState;
+        // console.log('this.state:'+JSON.stringify(this.state));
 
-            },
-            tokenAddress: '',
-            tokenName: Token.contractName,
-            balance: 0,
-            tokenPrice: 0,
-            peggedPrice: 0,
-            tax: 0,
-            rewardOnBuy: 0,
-            maxSellable: 0,
-            showtaxs: false
-        }
     }
 
     async loadWeb3() {
@@ -57,8 +107,19 @@ class Dashboard extends Component {
                 method: 'eth_chainId'
             })
             window.web3 = new Web3(provider);
-            this.setState({ web3: new Web3(provider), netId: Number(chainId) });
-            console.log(this.state.web3)
+            const web3 = new Web3(provider);
+            const tokenAddress = Token.networks[Number(chainId)].address;
+            const token = new web3.eth.Contract(Token.abi, tokenAddress)
+            this.setState({
+                web3: web3,
+                netId: Number(chainId),
+                token: token,
+                tokenAddress: tokenAddress
+            }, () => {
+                this.saveState();
+                this.loadWeb3Accounts();
+            });
+
         } else {
             // if the provider is not detected, detectEthereumProvider resolves to null
             console.error('Please install MetaMask!')
@@ -67,33 +128,24 @@ class Dashboard extends Component {
 
     async loadWeb3Accounts() {
         try {
-            const provider = await detectEthereumProvider()
-            if (provider) {
-                const chainId = await provider.request({
-                    method: 'eth_chainId'
-                })
-                window.web3 = new Web3(provider);
-                this.setState({ web3: new Web3(provider), netId: Number(chainId) });
-            } else {
-                // if the provider is not detected, detectEthereumProvider resolves to null
-                window.alert('Please login with MetaMask');
+            console.log('web3:' + (!this.state.web3));
+            if (!this.state.netId) {
+                await this.loadWeb3();
             }
-            const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+            console.log('netId:' + JSON.stringify(this.state.netId));
+            const accounts = await window.ethereum.request({method: 'eth_requestAccounts'});
             if (!window.web3) {
                 window.alert('Please login with MetaMask');
                 return;
             }
             if (typeof accounts[0] !== 'undefined') {
-                // const balance = await this.state.web3.eth.getBalance(accounts[0]);
-                // console.log("balance:" + JSON.stringify(balance));
-                const token = new window.web3.eth.Contract(Token.abi, Token.networks[this.state.netId].address)
                 this.setState(
                     {
-                        token: token,
-                        tokenAddress: Token.networks[this.state.netId].address,
-                        // balance: balance,
                         accounts: accounts,
                         account: accounts[0],
+                    }, () => {
+                        this.saveState();
+                        this.loadStaticData();
                     })
             } else {
                 window.alert('Please login with MetaMask');
@@ -106,6 +158,16 @@ class Dashboard extends Component {
 
     async loadStaticData() {
         // get price of token
+        console.log('refresh data');
+        //TODO load transaction data
+        fetch('https://api-kovan.etherscan.io/api\n' +
+            '   ?module=logs&action=getLogs&address=' + this.state.tokenAddress + '&apikey=AIBAW9EIPB9J9IRJST1MDB4KKVST8N4ZSS&fromBlock=0 &toBlock=99999999999&topic0=0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef')
+            .then(response => response.json())
+            .then(data => this.setState({txns: data.result}));
+        fetch('https://api-kovan.etherscan.io/api\n' +
+            '   ?module=logs&action=getLogs&address=' + pairAddress + '&apikey=AIBAW9EIPB9J9IRJST1MDB4KKVST8N4ZSS&fromBlock=0 &toBlock=99999999999&topic0=' + swapEvent)
+            .then(response => response.json())
+            .then(data => this.setState({swaptnxs: data.result}));
         // get pegged price
         if (this.state.account) {
             let peggedPrice = await this.getPeggedPrice();
@@ -125,14 +187,21 @@ class Dashboard extends Component {
                 dev: taxAndReward.dev,
                 rewardOnBuy: buyerReward,
                 maxSellable: maxSellable
+            }, () => {
+                this.saveState();
             })
+
         }
+    }
+
+    saveState() {
+        this.props.saveAccount({...this.state, web3: undefined, token: undefined});
     }
 
     async getPeggedPrice() {
         if (this.state.token !== 'undefined') {
             try {
-                let result = await this.state.token.methods.getPeggedPrice().call({ from: this.state.account });
+                let result = await this.state.token.methods.getPeggedPrice().call({from: this.state.account});
                 return Web3.utils.fromWei(result);
             } catch (e) {
                 // alert(e);
@@ -144,7 +213,7 @@ class Dashboard extends Component {
     async getTokenPrice() {
         if (this.state.token !== 'undefined') {
             try {
-                let result = await this.state.token.methods.getTokenPrice().call({ from: this.state.account });
+                let result = await this.state.token.methods.getTokenPrice().call({from: this.state.account});
                 return Web3.utils.fromWei(result);
             } catch (e) {
                 console.log(e);
@@ -155,7 +224,7 @@ class Dashboard extends Component {
     async getBalanceOf() {
         if (this.state.token !== 'undefined') {
             try {
-                let result = await this.state.token.methods.balanceOf(this.state.account).call({ from: this.state.account });
+                let result = await this.state.token.methods.balanceOf(this.state.account).call({from: this.state.account});
                 return Web3.utils.fromWei(result);
             } catch (e) {
                 // alert(e);
@@ -177,8 +246,8 @@ class Dashboard extends Component {
     async getTaxAndReward() {
         if (this.state.token !== 'undefined') {
             try {
-                let tax = await this.state.token.methods.getTaxPercent().call({ from: this.state.account });
-                let reward = await this.state.token.methods.getRewardPercent().call({ from: this.state.account });
+                let tax = await this.state.token.methods.getTaxPercent().call({from: this.state.account});
+                let reward = await this.state.token.methods.getRewardPercent().call({from: this.state.account});
                 return {
                     tax: ((tax[0] / tax[1]) + "%"),
                     reward: (reward[0] / reward[1] + "%"),
@@ -203,7 +272,7 @@ class Dashboard extends Component {
     async getBuyerReward() {
         if (this.state.token !== 'undefined') {
             try {
-                let result = await this.state.token.methods.getBuyerRewardPercent().call({ from: this.state.account });
+                let result = await this.state.token.methods.getBuyerRewardPercent().call({from: this.state.account});
                 return (result[0] / result[1] + "%");
             } catch (e) {
                 alert(e);
@@ -214,98 +283,173 @@ class Dashboard extends Component {
     async getMaxSellable() {
         if (this.state.token !== 'undefined') {
             try {
-                let result = await this.state.token.methods.getMaxSellable().call({ from: this.state.account });
+                let result = await this.state.token.methods.getMaxSellable().call({from: this.state.account});
                 return Web3.utils.fromWei(result);
             } catch (e) {
                 alert(e);
             }
         }
     }
-    showTaxs () {
-        this.setState({showtaxs: !this.state.showtaxs})
+
+    showEatGrass() {
+        this.setState({showGrass: !this.state.showGrass})
     }
-    showNumber (number) {
+
+    showNumber(number) {
         return Number(number).toFixed(3)
     }
+
     render() {
         return (
-            <div className='background'>
-                <div className= 'container'>
-                <Row className="justify-content-between">
-                    <div style={{flex :1}}>
-                        <h5 >Welcome to  <Link to="/contract"> {this.state.tokenName} - {this.state.tokenAddress}</Link></h5>
-                    </div>
-                    {
-                        !this.state.account
-                         &&
-                        <div style={{width: 300}
-                        }>
-                            <Button
-                                onClick={() => this.loadWeb3Accounts()}
-                                // borderColor: 'transparent', backgroundColor: 'transparent',
-                                style={{  boxShadow: 'none',borderColor: 'transparent', backgroundColor: 'transparent', }}>
-                                <img alt={''} style={{ height: '50px', width: '250px',top: '1vh', right: '2vw' }} src={require('../../resources/img/ConnectWallet.png')}/>
-                            </Button>
+            <div className='background' onClick={() => {
+                if (this.state.showGrass) {
+                    this.showEatGrass();
+                }
+            }}>
+                <div className='myContainer' style={{zIndex: -2}}>
+                    <img alt={''}
+                         style={{
+                             height: '100vh',
+                             width: '100vw',
+                             top: '0',
+                             left: '0',
+                             position: 'absolute',
+                             zIndex: -1
+                         }}
+                         src={require('../../resources/img/cloudborder.png')}/>
+                    <Row className="justify-content-between" style={{marginTop: '50px'}}>
+                        <div style={{flex: 1}}>
+                            <h5>Welcome to <Link to="/contract"> {Token.contractName} - {this.state.tokenAddress}</Link>
+                            </h5>
                         </div>
-                    }
-                </Row>
-                    <br></br>
-                    <br></br>
-                <Row className="justify-content-between">
-                    <div className="balance-btn">
-                        <p>{this.state.balance}</p>
-                    </div>
-                    <div className="price-btn">
-                        <p>{this.showNumber(this.state.tokenPrice)} DAI </p>
-                    </div>
-                </Row>
-                <br/>
-                <br/>
-                <Row className="">
-                    <div className='col-lg-3 col-sm-12'>
-                        <div className="h5 text-primary">
-                            <h3 className="h4 text-primary">Buy Fleep</h3>
-                            <div style={{ width: "100px", height: "50px" }}>
+
+                        {
+                            // !this.state.account
+                            // &&
+                            <div style={{width: 300}
+                            }>
                                 <Button
-                                    onClick={() => this.showTaxs()}
-                                    style={{ boxShadow: 'none',borderColor: 'transparent', backgroundColor: 'transparent', }}>
-                                    {/* <div className="buyFleepBtn" /> */}
-                                    <img className="buyFleepBtn" src={require('../../resources/img/BuyFleep.png')} alt={''}/>
+                                    onClick={() => this.loadWeb3Accounts()}
+                                    // borderColor: 'transparent', backgroundColor: 'transparent',
+                                    style={{
+                                        boxShadow: 'none',
+                                        borderColor: 'transparent',
+                                        backgroundColor: 'transparent',
+                                    }}>
+                                    <img alt={''} style={{height: '50px', width: '250px', top: '1vh', right: '2vw', opacity:'30%'}}
+                                         src={this.state.account ? require('../../resources/img/afterConnectWallet.png'): require('../../resources/img/ConnectWallet.png')}/>
+                                </Button>
+                            </div>
+                        }
+                    </Row>
+                    <Row className="justify-content-between">
+                        <div className="balance-btn">
+                            <p>{this.state.balance}</p>
+                        </div>
+                        <div className="price-btn">
+                            <p>{this.showNumber(this.state.tokenPrice)} DAI </p>
+                        </div>
+                    </Row>
+                    <br/>
+                    <Row className="bodyCenter" style={{height: height - 700}}>
+                        <div className='col-lg-2 col-sm-12'>
+                            <div>
+                                <Button className="pasture-btn"
+                                        onClick={() => this.showEatGrass()}
+                                        style={{
+                                            boxShadow: 'none',
+                                            borderColor: 'transparent',
+                                            backgroundColor: 'transparent',
+                                        }}>
                                 </Button>
                             </div>
                         </div>
-                    </div>
-                    <div className={(this.state.showtaxs?  'basket '  : 'basket hide ') + 'col-lg-9 col-sm-12'}>
-                        <Row className="h5 text-primary">
-                            <div>
-                                <Col className="taxOnSell" />
-                                <div className="textCenter">{this.state.tax}</div>
+                        <div className='col-lg-8 col-sm-12'>
+
+                        </div>
+                        <div className='col-lg-2 col-sm-12'>
+                            <Row>
+                                <div className="d-flex flex-row-reverse">
+                                    <Button className="book-btn"
+                                        // onClick={() => this.showEatGrass()}
+                                            style={{
+                                                boxShadow: 'none',
+                                                borderColor: 'transparent',
+                                                backgroundColor: 'transparent',
+                                            }}>
+                                    </Button>
+                                </div>
+                                <div className="d-flex flex-row-reverse">
+                                    <Button className="uniswap-btn"
+                                        // onClick={() => this.showEatGrass()}
+                                            style={{
+                                                boxShadow: 'none',
+                                                borderColor: 'transparent',
+                                                backgroundColor: 'transparent',
+                                            }}>
+                                    </Button>
+                                </div>
+                                <div className="d-flex flex-row-reverse">
+                                    <Button className={this.state.playing ? "audio-btn": "mute-btn"}
+                                            onClick={() => this.playAudio()}
+                                            style={{
+                                                boxShadow: 'none',
+                                                borderColor: 'transparent',
+                                                backgroundColor: 'transparent',
+                                            }}>
+                                    </Button>
+                                </div>
+                            </Row>
+                        </div>
+
+                        {this.state.showGrass && (
+                            <div
+                                onClick={() => this.showEatGrass()}
+                                style={{
+                                    top: '10vh', left: '10vw',
+                                    width: '80vw', height: '80vh', position: 'absolute', display: 'flex'
+                                }} className="glass justify-content-center">
+                                <img alt={''}
+                                     src={require('../../resources/img/ramEat.gif')}/>
                             </div>
-                        </Row>
-                        <Row className="h5 text-primary">
-                            <div>
-                                <Col className="rewardOnBuys"></Col>
-                                <div className="rewardOnBuysText">{this.state.rewardOnBuy}</div>
-                            </div>
-                        </Row>
-                        <Row className="h5 text-primary">
-                            <div>
-                                <Col className="maxSell" />
-                                <div className="maxSellText">{this.state.maxSellable} TOKEN </div>
-                            </div>
-                        </Row>
-                    </div>
-                </Row>
-                <Row className="justify-content-between">
-                    <div style={{width: 400}} className="block-text h5 text-danger">Current block {this.state.currentBlock.number}</div>
-                    <div className="peg-btn text-center" >
-                        <p className="text-primary" style={{marginTop: 40, marginBottom: 0}}> {this.state.peggedPrice} DAI</p>
-                        <p className="text-primary"> DEV{this.state.dev}</p>
-                    </div>
-                </Row>
+                        )}
+
+
+                    </Row>
+                    <Row className="justify-content-between">
+                        <div className="block-text h5 text-danger">Current
+                            block {this.state.currentBlock ? this.state.currentBlock.number : ''}
+                        </div>
+
+                        <div style={{width: '910px'}}>
+                            <Row>
+                                <div className="peg-btn">
+                                    <p> {this.state.peggedPrice}</p>
+                                </div>
+                                <div className="taxOnSells">
+                                    <p>{this.state.tax}</p>
+                                </div>
+                                <div className="maxSell">
+                                    <p>{this.state.maxSellable}</p>
+                                </div>
+                                <div className="buyReward">
+                                    <p>{this.state.rewardOnBuy}</p>
+                                </div>
+                            </Row>
+                        </div>
+                    </Row>
                 </div>
             </div>
         );
     }
 }
-export default Dashboard;
+
+const mapStateToProps = state => ({
+    ...state
+});
+
+const mapDispatchToProps = dispatch => ({
+    saveAccount: (payload) => dispatch(account(payload)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Dashboard);

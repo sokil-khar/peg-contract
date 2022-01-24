@@ -1,5 +1,4 @@
 .background {
-    background: url("../../resources/img/background.gif") no-repeat center center fixed;
     position: fixed;
     top: 0;
     background-color: #a4b6d3;
@@ -10,6 +9,16 @@
     margin: 0;
     overflow: scroll;
     height: 100vh;
+    z-index: -2;
+}
+.myContainer {
+    background: url("../../resources/img/background.gif") no-repeat fixed center;
+    width: 90%;
+    margin-right: 5%;
+    margin-left: 5%;
+    z-index: -2;
+    font-size: 16px;
+    background-size: cover;
 }
 
 @media (min-width:320px)  {
@@ -20,19 +29,10 @@
 }
 @media (min-width:641px) {
 }
-.headingRow {
-    width: 100%;
-    /* height: 300px;
-    padding-top: 2em; */
-    margin-top: 1em;
-    margin-left: 15px;
-    margin-right: 15px;
-    position: relative;
-    padding-top: 1vh;
-    display: flex;
-    justify-content: space-between;
-}
 
+@media (max-width: 2048px) {
+    /*background: "red";*/
+}
 
 .basket {
     transition: opacity 0.5s;
@@ -45,7 +45,6 @@
 
 .balance-btn {
     background-image: url("../../resources/img/BalanceSprite.png");
-    z-index: -1;
     left: 1vw;
     /* top: 100px; */
     height: 100px;
@@ -65,11 +64,11 @@
 .balance-btn p {
     margin-top: 52px;
     text-align: center;
+    font-family: slkscrb, serif;
 }
 
 .price-btn {
     background-image: url("../../resources/img/Price.png");
-    z-index: -1;
     right: 1vw;
     /* top: 100px; */
     height: 100px;
@@ -88,19 +87,16 @@
 .price-btn p {
     margin-top: 52px;
     text-align: center;
+    font-family: slkscrb, serif;
 }
 
 .block-text {
-
+    left: 1vw;
+    width: 200px;
 }
 
-.bodyContainer {
-    padding-top: 0vh;
-    margin-top: 16vh;
-    height: 60vh;
-    padding-left: 3vw;
-    /* border-width: 5px;
-    border-style: dotted dashed solid double; */
+.bodyCenter {
+    min-height: 30vw;
 }
 
 .footerRow {
@@ -112,8 +108,27 @@
 
 .peg-btn {
     background-image: url("../../resources/img/Peg.png");
-    z-index: -1;
     height: 100px;
+    right: 1vw;
+    width: 300px;
+    padding-bottom: 10px;
+    /* Center and scale the image nicely */
+    background-position: bottom;
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+
+.peg-btn p {
+    margin-top: 52px;
+    text-align: center;
+    font-family: slkscrb, serif;
+}
+
+.pasture-btn {
+    background-image: url("../../resources/img/pasture.png");
+    /* top: 100px; */
+    margin-left: -10px;
+    height: 90px;
     width: 300px;
     /* margin-top: 1em;
     z-index: -1;
@@ -126,15 +141,116 @@
     background-size: contain;
 }
 
-.peg-text {
+.book-btn {
+    background-image: url("../../resources/img/book.gif");
+    right: 5px;
+    height: 100px;
+    width: 100px;
+    /* margin-top: 1em;
     z-index: -1;
+    height: 10em;
+    width: 2em; */
+
+    /* Center and scale the image nicely */
+    background-position: bottom;
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+
+.uniswap-btn {
+    background-image: url("../../resources/img/uniswap.png");
+    right: 5px;
+    height: 100px;
+    width: 100px;
+    /* margin-top: 1em;
+    z-index: -1;
+    height: 10em;
+    width: 2em; */
+
+    /* Center and scale the image nicely */
+    background-position: bottom;
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+
+.audio-btn {
+    background-image: url("../../resources/img/audio.png");
+    right: 5px;
+    height: 60px;
+    width: 60px;
+    margin-right: 10px;
+    padding: 40px;
+    /* margin-top: 1em;
+    z-index: -1;
+    height: 10em;
+    width: 2em; */
+
+    /* Center and scale the image nicely */
+    background-position: bottom;
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+
+.mute-btn {
+    background-image: url("../../resources/img/mute.png");
+    right: 5px;
+    height: 100px;
+    width: 100px;
+    margin: 10px;
+    /* margin-top: 1em;
+    z-index: -1;
+    height: 10em;
+    width: 2em; */
+
+    /* Center and scale the image nicely */
+    background-position: bottom;
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+
+.glass {
+    background-image: url("../../resources/img/grass.png");
+}
+
+.buy-btn {
+    background-image: url("../../resources/img/BuyFleep.png");
+    right: 1vw;
+    /* top: 100px; */
+    height: 60px;
+    width: 200px;
+    /* margin-top: 1em;
+    z-index: -1;
+    height: 10em;
+    width: 2em; */
+
+    /* Center and scale the image nicely */
+    background-position: bottom;
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+
+.peg-text {
     height: 100px;
     width: 300px;
+    font-family: slkscrb, serif;
 }
 
 .dev-text {
-    z-index: -1;
     height: 100px;
     width: 300px;
+    font-family: slkscrb, serif;
+}
+
+.tnx {
+    font-family: "Times New Roman", serif;
+}
+
+.trade_table {
+    font-family: "Times New Roman", serif;
+
+}
+
+.paddingRight {
+    padding-right: 1vw;
 }
 

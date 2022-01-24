@@ -1,8 +1,11 @@
 @font-face {
-    font-family: 'slkscrb';
-    src: local('slkscrb'), url('./fonts/slkscrb.ttf') format ('truetype');
-    font-weight: bold
+    src: url(fonts/slkscrb.ttf);
+    font-family: slkscrb;
 }
-* {
-    font-family: 'Press Start 2P', cursive;
-}
+
+/** {*/
+/*    font-family: slkscrb, serif;*/
+/*}*/
+/** {*/
+/*    font-family: 'Press Start 2P', cursive;*/
+/*}*/
