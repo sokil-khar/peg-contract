@@ -4,13 +4,9 @@
     <list default="true" id="8f2b6555-2890-4aca-bc05-cdb871b01621" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/Dashboard/Dashboard.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Dashboard/Dashboard.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/Dashboard/Dashboard.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Dashboard/Dashboard.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/Dashboard/MaxSell.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Dashboard/MaxSell.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/Dashboard/RewardOnBuys.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Dashboard/RewardOnBuys.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/Dashboard/TaxOnSell.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Dashboard/TaxOnSell.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/resources/audio/background.wav" beforeDir="false" afterPath="$PROJECT_DIR$/src/resources/audio/background.wav" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/resources/img/charts.png" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -47,11 +43,22 @@
       <workItem from="1643009754348" duration="22000" />
       <workItem from="1643009780704" duration="6000" />
       <workItem from="1643009811121" duration="2378000" />
-      <workItem from="1643013906879" duration="5147000" />
+      <workItem from="1643013906879" duration="9223000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
 </project>

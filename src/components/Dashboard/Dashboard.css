@@ -12,7 +12,6 @@
     z-index: -2;
 }
 .grass-bg{
-    background: url('../../resources/img/ramEat.gif') no-repeat fixed center;
     top: 10vh;
     left: 10vw;
     width: 80vw;
@@ -150,6 +149,22 @@
     background-size: contain;
 }
 
+.chart-btn {
+    background-image: url("../../resources/img/charts.png");
+    /* top: 100px; */
+    margin-left: -10px;
+    height: 90px;
+    width: 300px;
+    /* margin-top: 1em;
+    z-index: -1;
+    height: 10em;
+    width: 2em; */
+
+    /* Center and scale the image nicely */
+    background-position: bottom;
+    background-repeat: no-repeat;
+    background-size: contain;
+}
 .book-btn {
     background-image: url("../../resources/img/book.gif");
     right: 5px;

@@ -298,7 +298,10 @@ class Dashboard extends Component {
     showNumber(number) {
         return Number(number).toFixed(3)
     }
-
+    gotoChart()
+    {
+        window.location.href = this.state.tokenAddress? `https://www.dextools.io/app/ether/pair-explorer/${this.state.tokenAddress}`: ''
+    }
     render() {
         return (
             <div className='background' onClick={() => {
@@ -351,10 +354,21 @@ class Dashboard extends Component {
                                         }}>
                                 </Button>
                             </div>
+                            <div>
+                                <Button  className="chart-btn"
+                                         onClick={() => this.gotoChart()}
+                                         style={{
+                                             boxShadow: 'none',
+                                             borderColor: 'transparent',
+                                             backgroundColor: 'transparent',
+                                         }}>
+                                </Button>
+                            </div>
                         </div>
                         <div className='col-lg-8 col-sm-12'>
 
                         </div>
+
                         <div className='col-lg-2 col-sm-12'>
                             <Row>
                                 <div className="d-flex flex-row-reverse">
@@ -366,6 +380,7 @@ class Dashboard extends Component {
                                                 backgroundColor: 'transparent',
                                             }}>
                                     </Button>
+
                                 </div>
                                 <div className="d-flex flex-row-reverse">
                                     <Button className="uniswap-btn"
@@ -390,6 +405,8 @@ class Dashboard extends Component {
                             </Row>
                         </div>
 
+                        <br/>
+                        <br/>
                         {this.state.showGrass && (
                             <div
                                 onClick={() => this.showEatGrass()}
@@ -397,9 +414,11 @@ class Dashboard extends Component {
                                     top: '10vh', left: '10vw',
                                     width: '80vw', height: '80vh', position: 'absolute', display: 'flex'
                                 }} className="glass justify-content-center">
-                                <div className="col-sm-12 col-lg-3 grass-bg" >
-                                    <Row>
-                                        <div className="taxOnSells  col-sm-12">
+                                <img alt={''}
+                                     src={require('../../resources/img/ramEat.gif')}/>
+                                <div className="grass-bg justify-content-around" >
+                                    <Row style={{display:'inline-grid'}}>
+                                        <div className="taxOnSells">
                                             <p>{this.state.tax}</p>
                                         </div>
                                         <div className="maxSell col-sm-12">
