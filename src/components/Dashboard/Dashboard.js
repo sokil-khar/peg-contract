@@ -298,10 +298,17 @@ class Dashboard extends Component {
     showNumber(number) {
         return Number(number).toFixed(3)
     }
+
     gotoChart()
     {
-        window.location.href = this.state.tokenAddress? `https://www.dextools.io/app/ether/pair-explorer/${this.state.tokenAddress}`: ''
+        window.location.href = 'https://www.dextools.io/app/ether/pair-explorer/'
     }
+
+    gotoDocs()
+    {
+        window.location.href = 'https://docs.fleep.fi/';
+    }
+
     render() {
         return (
             <div className='background' onClick={() => {
@@ -373,7 +380,7 @@ class Dashboard extends Component {
                             <Row>
                                 <div className="d-flex flex-row-reverse">
                                     <Button className="book-btn"
-                                        // onClick={() => this.showEatGrass()}
+                                        onClick={() => this.gotoDocs()}
                                             style={{
                                                 boxShadow: 'none',
                                                 borderColor: 'transparent',
